@@ -737,14 +737,16 @@ namespace Flexbox
                 case "padding-right"://         |  15px / 30%          |
                 case "padding-top"://           |  15px / 30%          |
                 case "padding-bottom"://        |  15px / 30%          |
-                case "border"://                |  1px / 1px 2px 3px 4px / 2px 3px    |
+                case "border-width"://                |  1px / 1px 2px 3px 4px / 2px 3px    |
                 case "border-left"://           |  15px                |
                 case "border-right"://          |  15px                |
                 case "border-top"://            |  15px                |
                 case "border-bottom"://         |  15px                |
                                      // parse [margin|padding|border]-[Edgexxxx]
+
                     if (ParseBreakWork(attrKey, out string head, out string tail))
                     {
+                        if (head == "border" && tail == "width") tail = "";
                         if (tail == "")
                         {
                             switch (head)

@@ -17,7 +17,8 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 
 * `<integer>` = `integer value like [-1, 0, 1]` 
 * `<number>` = `extend <integer> with float values like [-1.2, 0, 1.2]`
-* `<length>` = `<integer> | <integer>px | <number>%`
+* `<length>` = `<integer> | <integer>px`
+* `<length-percentage>` = `<length> | <number>%`
 
 | Name | Default | Value |                                 
 |-|-|-|
@@ -34,26 +35,26 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 | flex-grow | 0 | `<number>` |
 | justify-content | flex-start | `flex-start | center | flex-end | space-between | space-around` |
 | direction | inherit (ltr) | `inherit | ltr | rtl` |
-| left | auto | `auto | <length>` |
-| top | auto | `auto | <length>` |
-| right | auto | `auto | <length>` |
-| bottom | auto | `auto | <length>` |
-| width | auto | `auto | <length>` |
-| height | auto | `auto | <length>` |
-| min-width | auto | `auto | <length>` |
-| min-height | auto | `auto | <length>` |
-| max-width | auto | `auto | <length>` |
-| max-height | auto | `auto | <length>` |
-| margin | 0 | `<length>{1,4}` |
-| margin-left | 0 | `<length>` |
-| margin-right | 0 | `<length>` |
-| margin-top | 0 | `<length>` |
-| margin-bottom | 0 | `<length>` |
-| padding | 0 | `<length>{1,4}` |
-| padding-left | 0 | `<length>` |
-| padding-right | 0 | `<length>` |
-| padding-top | 0 | `<length>` |
-| padding-bottom | 0 | `<length>` |
+| left | auto | `auto | <length-percentage>` |
+| top | auto | `auto | <length-percentage>` |
+| right | auto | `auto | <length-percentage>` |
+| bottom | auto | `auto | <length-percentage>` |
+| width | auto | `auto | <length-percentage>` |
+| height | auto | `auto | <length-percentage>` |
+| min-width | auto | `auto | <length-percentage>` |
+| min-height | auto | `auto | <length-percentage>` |
+| max-width | auto | `auto | <length-percentage>` |
+| max-height | auto | `auto | <length-percentage>` |
+| margin | 0 | `<length-percentage>{1,4}` |
+| margin-left | 0 | `<length-percentage>` |
+| margin-right | 0 | `<length-percentage>` |
+| margin-top | 0 | `<length-percentage>` |
+| margin-bottom | 0 | `<length-percentage>` |
+| padding | 0 | `<length-percentage>{1,4}` |
+| padding-left | 0 | `<length-percentage>` |
+| padding-right | 0 | `<length-percentage>` |
+| padding-top | 0 | `<length-percentage>` |
+| padding-bottom | 0 | `<length-percentage>` |
 | border-width | 0 | `<length>{1,4}` |
 | border-left | 0 | `<length>` |
 | border-right | 0 | `<length>` |

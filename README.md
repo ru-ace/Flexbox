@@ -15,46 +15,50 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 
 ## Supported style attributes
 
-| Name | Default | Example |
+* `<integer>` = `integer value like [-1, 0, 1]` 
+* `<number>` = `extend <integer> with float values like [-1.2, 0, 1.2]`
+* `<length>` = `<integer> | <integer>px | <number>%`
+
+| Name | Default | Value |                                 
 |-|-|-|
-| display | flex | none \| flex |
-| overflow | visible | visible \| hidden \|  scroll |
-| position | relative | relative \| absolute |
-| align-content | stretch | auto \| flex-start \| center \| flex-end \| stretch \| baseline \| space-between \| space-around |
-| align-items | stretch | auto \| flex-start \| center \| flex-end \| stretch \| baseline \| space-between \| space-around |
-| align-self | auto | auto \| flex-start \| center \| flex-end \| stretch \| baseline \| space-between \| space-around |
-| flex-direction | row | column \| column-reverse \| row \| row-reverse |
-| flex-wrap | no-wrap| no-wrap \| wrap \| wrap-reverse |
-| flex-basis | auto | 15px \| 30% |
-| flex-shrink | 1 | 5 \| -3.2 |
-| flex-grow | 0 | 5 \| -3.2 |
-| justify-content | flex-start | flex-start \| center \| flex-end \| space-between \| space-around |
-| direction | inherit (ltr) | inherit \| ltr \| rtl |
-| left | auto | 15px \| 30% |
-| top | auto | 15px \| 30% |
-| right | auto | 15px \| 30% |
-| bottom | auto | 15px \| 30% |
-| width | auto | 15px \| 30% |
-| height | auto | 15px \| 30% |
-| min-width | auto | 15px \| 30% |
-| min-height | auto | 15px \| 30% |
-| max-width | auto | 15px \| 30% |
-| max-height | auto | 15px \| 30% |
-| margin | 0 | 1px \| 1px 2px 3px 4px \| 2px 3px |
-| margin-left | 0 | 15px \| 30% |
-| margin-right | 0 | 15px \| 30% |
-| margin-top | 0 | 15px \| 30% |
-| margin-bottom | 0 | 15px \| 30% |
-| padding | 0 | 1px \| 1px 2px 3px 4px \| 2px 3px |
-| padding-left | 0 | 15px \| 30% |
-| padding-right | 0 | 15px \| 30% |
-| padding-top | 0 | 15px \| 30% |
-| padding-bottom | 0 | 15px \| 30% |
-| border-width | 0 | 1px \| 1px 2px 3px 4px \| 2px 3px |
-| border-left | 0 | 15px |
-| border-right | 0 | 15px |
-| border-top | 0 | 15px |
-| border-bottom | 0 | 15px |
+| display | flex | `none | flex` |
+| overflow | visible | `visible | hidden |  scroll` |
+| position | relative | `relative | absolute` |
+| align-content | stretch | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
+| align-items | stretch | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
+| align-self | auto | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
+| flex-direction | row | `column | column-reverse | row | row-reverse` |
+| flex-wrap | no-wrap | `no-wrap | wrap | wrap-reverse` |
+| flex-basis | auto | `auto | <length>` |
+| flex-shrink | 1 | `<number>` |
+| flex-grow | 0 | `<number>` |
+| justify-content | flex-start | `flex-start | center | flex-end | space-between | space-around` |
+| direction | inherit (ltr) | `inherit | ltr | rtl` |
+| left | auto | `auto | <length>` |
+| top | auto | `auto | <length>` |
+| right | auto | `auto | <length>` |
+| bottom | auto | `auto | <length>` |
+| width | auto | `auto | <length>` |
+| height | auto | `auto | <length>` |
+| min-width | auto | `auto | <length>` |
+| min-height | auto | `auto | <length>` |
+| max-width | auto | `auto | <length>` |
+| max-height | auto | `auto | <length>` |
+| margin | 0 | `<length>{1,4}` |
+| margin-left | 0 | `<length>` |
+| margin-right | 0 | `<length>` |
+| margin-top | 0 | `<length>` |
+| margin-bottom | 0 | `<length>` |
+| padding | 0 | `<length>{1,4}` |
+| padding-left | 0 | `<length>` |
+| padding-right | 0 | `<length>` |
+| padding-top | 0 | `<length>` |
+| padding-bottom | 0 | `<length>` |
+| border-width | 0 | `<length>{1,4}` |
+| border-left | 0 | `<length>` |
+| border-right | 0 | `<length>` |
+| border-top | 0 | `<length>` |
+| border-bottom | 0 | `<length>` |
 
 ## Docs & Playgrounds
 

@@ -17,34 +17,34 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 
 * `<integer>` = `integer value like [-1, 0, 1]` 
 * `<number>` = `extend <integer> with float values like [-1.2, 0, 1.2]`
-* `<length>` = `<integer> | <integer>px`
-* `<length-percentage>` = `<length> | <number>%`
+* `<length>` = `<integer>` | `<integer>px`
+* `<length-percentage>` = `<length>` | `<number>%`
 
 | Name | Default | Value |                                 
 |-|-|-|
-| display | flex | `none | flex` |
-| overflow | visible | `visible | hidden |  scroll` |
-| position | relative | `relative | absolute` |
-| align-content | stretch | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
-| align-items | stretch | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
-| align-self | auto | `auto | flex-start | center | flex-end | stretch | baseline | space-between | space-around` |
-| flex-direction | row | `column | column-reverse | row | row-reverse` |
-| flex-wrap | no-wrap | `no-wrap | wrap | wrap-reverse` |
-| flex-basis | auto | `auto | <length>` |
+| display | flex | `none` \| `flex` |
+| overflow | visible | `visible` \| `hidden` \| `scroll` |
+| position | relative | `relative` \| `absolute` |
+| align-content | stretch | `auto` \| `flex-start` \| `center` \| `flex-end` \| `stretch` \| `baseline` \| `space-between` \| `space-around` |
+| align-items | stretch | `auto` \| `flex-start` \| `center` \| `flex-end` \| `stretch` \| `baseline` \| `space-between` \| `space-around` |
+| align-self | auto | `auto` \| `flex-start` \| `center` \| `flex-end` \| `stretch` \| `baseline` \| `space-between` \| `space-around` |
+| flex-direction | row | `column` \| `column-reverse` \| `row` \| `row-reverse` |
+| flex-wrap | no-wrap | `no-wrap` \| `wrap` \| `wrap-reverse` |
+| flex-basis | auto | `auto` \| `<length>` |
 | flex-shrink | 1 | `<number>` |
 | flex-grow | 0 | `<number>` |
-| justify-content | flex-start | `flex-start | center | flex-end | space-between | space-around` |
-| direction | inherit (ltr) | `inherit | ltr | rtl` |
-| left | auto | `auto | <length-percentage>` |
-| top | auto | `auto | <length-percentage>` |
-| right | auto | `auto | <length-percentage>` |
-| bottom | auto | `auto | <length-percentage>` |
-| width | auto | `auto | <length-percentage>` |
-| height | auto | `auto | <length-percentage>` |
-| min-width | auto | `auto | <length-percentage>` |
-| min-height | auto | `auto | <length-percentage>` |
-| max-width | auto | `auto | <length-percentage>` |
-| max-height | auto | `auto | <length-percentage>` |
+| justify-content | flex-start | `flex-start` \| `center` \| `flex-end` \| `space-between` \| `space-around` |
+| direction | inherit ltr | `inherit` \| `ltr` \| `rtl` |
+| left | auto | `auto` \| `<length-percentage>` |
+| top | auto | `auto` \| `<length-percentage>` |
+| right | auto | `auto` \| `<length-percentage>` |
+| bottom | auto | `auto` \| `<length-percentage>` |
+| width | auto | `auto` \| `<length-percentage>` |
+| height | auto | `auto` \| `<length-percentage>` |
+| min-width | auto | `auto` \| `<length-percentage>` |
+| min-height | auto | `auto` \| `<length-percentage>` |
+| max-width | auto | `auto` \| `<length-percentage>` |
+| max-height | auto | `auto ` \| `<length-percentage>` |
 | margin | 0 | `<length-percentage>{1,4}` |
 | margin-left | 0 | `<length-percentage>` |
 | margin-right | 0 | `<length-percentage>` |

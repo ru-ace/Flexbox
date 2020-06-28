@@ -53,7 +53,7 @@ namespace Flexbox
 
             public override string ToString()
             {
-                return string.Format("(x:{0} y:{1} w:{2} h:{3}) (t:{4} r:{5} b:{6} l:{7})", absoluteLeft, absoluteTop, width, height, top, right, bottom, left);
+                return string.Format("(x:{0} y:{1} w:{2} h:{3}) (l:{4} t:{5} r:{6} b:{7}))", absoluteLeft, absoluteTop, width, height, left, top, right, bottom);
             }
         }
         public struct Layout
@@ -100,7 +100,7 @@ namespace Flexbox
                 direction = node.LayoutGetDirection();
             }
 
-            public string ToStr() { return ToStr(0); }
+            public override string ToString() { return ToStr(0); }
             public string ToStr(int indent)
             {
                 string line = "{\n";

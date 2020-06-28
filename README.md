@@ -12,6 +12,7 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 
 * Default values sets to [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/), instead of [facebook/yoga](https://github.com/facebook/yoga) 
 * Some changes in `Flex.Parse.cs`
+* `Node.LayoutGet*()` methods are internal: use Node.layout instead - `Node.Layout` struct (see `Node.Layout.cs`), which contain cached dimensions of layout, includes edges in absolute coordinates.
 
 ## Supported style attributes
 
@@ -44,7 +45,7 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 | min-width | auto | `auto` \| `<length-percentage>` |
 | min-height | auto | `auto` \| `<length-percentage>` |
 | max-width | auto | `auto` \| `<length-percentage>` |
-| max-height | auto | `auto ` \| `<length-percentage>` |
+| max-height | auto | `auto` \| `<length-percentage>` |
 | margin | 0 | `<length-percentage>{1,4}` |
 | margin-left | 0 | `<length-percentage>` |
 | margin-right | 0 | `<length-percentage>` |

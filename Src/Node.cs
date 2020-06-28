@@ -7,6 +7,17 @@ namespace Flexbox
         readonly internal Flex.Layout nodeLayout = new Flex.Layout();
         internal int lineIndex;
 
+        private Layout? _layout = null;
+        public Layout layout
+        {
+            get
+            {
+                if (_layout == null)
+                    _layout = new Layout(this);
+                return (Layout)_layout;
+            }
+        }
+
         internal Node Parent = null;
         internal readonly List<Node> Children = new List<Node>();
 
@@ -48,6 +59,7 @@ namespace Flexbox
 
         public void CalculateLayout(float parentWidth, float parentHeight, Direction parentDirection)
         {
+            _layout = null;
             Flex.CalculateLayout(this, parentWidth, parentHeight, parentDirection);
         }
         public void MarkAsDirty()
@@ -58,60 +70,60 @@ namespace Flexbox
 
         #region Layout
 
-        public int LayoutGetScreenX()
+        internal float LayoutGetAbsoluteLeft()
         {
-            int x = (int)this.nodeLayout.Position[(int)Edge.Left];
+            var x = this.nodeLayout.Position[(int)Edge.Left];
             if (this.nodeStyle.PositionType == PositionType.Relative && this.Parent != null)
-                x += this.Parent.LayoutGetScreenX();
+                x += this.Parent.LayoutGetAbsoluteLeft();
             return x;
         }
 
-        public int LayoutGetScreenY()
+        internal float LayoutGetAbsoluteTop()
         {
-            int y = (int)this.nodeLayout.Position[(int)Edge.Top];
+            var y = this.nodeLayout.Position[(int)Edge.Top];
             if (this.nodeStyle.PositionType == PositionType.Relative && this.Parent != null)
-                y += this.Parent.LayoutGetScreenY();
+                y += this.Parent.LayoutGetAbsoluteTop();
             return y;
         }
         // LayoutGetLeft gets left
-        public float LayoutGetLeft()
+        internal float LayoutGetLeft()
         {
             return this.nodeLayout.Position[(int)Edge.Left];
         }
 
         // LayoutGetTop gets top
-        public float LayoutGetTop()
+        internal float LayoutGetTop()
         {
 
             return this.nodeLayout.Position[(int)Edge.Top];
         }
 
         // LayoutGetRight gets right
-        public float LayoutGetRight()
+        internal float LayoutGetRight()
         {
             return this.nodeLayout.Position[(int)Edge.Right];
         }
 
         // LayoutGetBottom gets bottom
-        public float LayoutGetBottom()
+        internal float LayoutGetBottom()
         {
             return this.nodeLayout.Position[(int)Edge.Bottom];
         }
 
         // LayoutGetWidth gets width
-        public float LayoutGetWidth()
+        internal float LayoutGetWidth()
         {
             return this.nodeLayout.Dimensions[(int)Dimension.Width];
         }
 
         // LayoutGetHeight gets height
-        public float LayoutGetHeight()
+        internal float LayoutGetHeight()
         {
             return this.nodeLayout.Dimensions[(int)Dimension.Height];
         }
 
         // LayoutGetMargin gets margin
-        public float LayoutGetMargin(Edge edge)
+        internal float LayoutGetMargin(Edge edge)
         {
             Flex.assertWithNode(this, edge < Edge.End, "Cannot get layout properties of multi-edge shorthands");
             if (edge == Edge.Left)
@@ -134,7 +146,7 @@ namespace Flexbox
         }
 
         // LayoutGetBorder gets border
-        public float LayoutGetBorder(Edge edge)
+        internal float LayoutGetBorder(Edge edge)
         {
             Flex.assertWithNode(this, edge < Edge.End,
                 "Cannot get layout properties of multi-edge shorthands");
@@ -158,7 +170,7 @@ namespace Flexbox
         }
 
         // LayoutGetPadding gets padding
-        public float LayoutGetPadding(Edge edge)
+        internal float LayoutGetPadding(Edge edge)
         {
             Flex.assertWithNode(this, edge < Edge.End,
                 "Cannot get layout properties of multi-edge shorthands");
@@ -181,12 +193,12 @@ namespace Flexbox
             return this.nodeLayout.Padding[(int)edge];
         }
 
-        public Direction LayoutGetDirection()
+        internal Direction LayoutGetDirection()
         {
             return this.nodeLayout.Direction;
         }
 
-        public bool LayoutGetHadOverflow()
+        internal bool LayoutGetHadOverflow()
         {
             return this.nodeLayout.HadOverflow;
         }

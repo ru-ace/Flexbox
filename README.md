@@ -27,14 +27,11 @@ Flex.CalculateLayout(root, 200f, 200f, Direction.LTR);
 ```
 If you render rectangles for each node with (x: node.layout.absoluteLeft, y: node.layout.absoluteTop, w: node.layout.width, w: node.layout.height) you will get this result:  
 <html>
-<head><style> node { display: flex; box-sizing: border-box; border: 1px solid black; }</style></head>
-<body>
-    <node id="root" style="flex-direction: row; width: 200px; height: 200px; padding: 5px;">
-        <node id="node1" style="align-self: flex-start; margin: 5px; height: 50%; flex-grow: 1;"></node>
-        <node id="node2" style="align-self: center; margin: 5px; height: 50%; flex-grow: 1;"></node>
-        <node id="node3" style="align-self: flex-end; margin: 5px; height: 50%; flex-grow: 1;"></node>
-    </node>
-</body>
+    <div style="display: flex; box-sizing: border-box; border: 1px solid black;flex-direction: row; width: 200px; height: 200px; padding: 5px;">
+        <div style="display: flex; box-sizing: border-box; border: 1px solid black;align-self: flex-start; margin: 5px; height: 50%; flex-grow: 1;"></div>
+        <div style="display: flex; box-sizing: border-box; border: 1px solid black;align-self: center; margin: 5px; height: 50%; flex-grow: 1;"></div>
+        <div style="display: flex; box-sizing: border-box; border: 1px solid black;align-self: flex-end; margin: 5px; height: 50%; flex-grow: 1;"></div>
+    </div>
 </html>
 
 Html version:

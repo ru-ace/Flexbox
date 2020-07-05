@@ -76,7 +76,7 @@ namespace Flexbox
             {"direction", "ltr"}
         };
 
-        protected bool setDiffMode = false;
+        protected bool setMode = false;
 
         public bool layoutDirty
         {
@@ -107,7 +107,7 @@ namespace Flexbox
                 value = value.Trim();
                 // TODO: if attr is margin, padding, border - ignore it in change tracking and expands it to edges(top, left, bottom, right)
 
-                if (setDiffMode)
+                if (setMode)
                 {
                     var old_value = layoutAttributeWas.ContainsKey(attr) ? layoutAttributeWas[attr] : layoutAttributeDefault[attr];
                     if (value != old_value)
@@ -143,11 +143,15 @@ namespace Flexbox
             {
                 foreach (var kv in layoutAttribute)
                     layoutAttributeWas.Add(kv.Key, kv.Value);
-                setDiffMode = true;
+                setMode = true;
             }
             SetDefault();
             Apply(style);
-            setDiffMode = false;
+            foreach (var kv in layoutAttributeWas)
+                if (!layoutAttribute.ContainsKey(kv.Key))
+                    layoutAttributeChanged[kv.Key] = layoutAttributeDefault[kv.Key];
+
+            setMode = false;
         }
 
         public virtual void Apply(string style)

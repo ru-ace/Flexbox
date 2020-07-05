@@ -587,10 +587,13 @@ namespace Flexbox
             }
             return result != null;
         }
-        // margin-left --> ("margin", "left")
-        // margin --> ("margin", "")
+
         static bool ParseBreakWork(string input, out string head, out string tail)
         {
+            // margin --> ("margin", "")
+            // margin-left --> ("margin", "left")
+            // border-width --> ("border", "")
+            // border-left-width -> ("border", "left")
             head = "";
             tail = "";
             var t = input.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
@@ -600,8 +603,10 @@ namespace Flexbox
                     head = t[0];
                     return true;
                 case 2:
+                case 3: // border-edge-width
                     head = t[0];
                     tail = t[1];
+                    if (head == "border" && tail == "width") tail = "";
                     return true;
             }
             return false;
@@ -658,25 +663,25 @@ namespace Flexbox
             bool parsed = true;
             switch (attrKey)
             {
-                case "direction": //+
+                case "direction":
                     parsed = Flex.StringToDirection(attrValue, out style.Direction);
                     break;
-                case "flex-direction": //+
+                case "flex-direction":
                     parsed = Flex.StringToFlexDirection(attrValue, out style.FlexDirection);
                     break;
-                case "justify-content": //+
+                case "justify-content":
                     parsed = Flex.StringToJustify(attrValue, out style.JustifyContent);
                     break;
-                case "align-content": //+
+                case "align-content":
                     parsed = Flex.StringToAlign(attrValue, out style.AlignContent);
                     break;
-                case "align-items": //+
+                case "align-items":
                     parsed = Flex.StringToAlign(attrValue, out style.AlignItems);
                     break;
-                case "align-self": //+
+                case "align-self":
                     parsed = Flex.StringToAlign(attrValue, out style.AlignSelf);
                     break;
-                case "flex-wrap": //+
+                case "flex-wrap":
                     parsed = Flex.StringToWrap(attrValue, out style.FlexWrap);
                     break;
                 case "overflow":
@@ -685,13 +690,13 @@ namespace Flexbox
                 case "display":
                     parsed = Flex.StringToDisplay(attrValue, out style.Display);
                     break;
-                case "flex-grow": //+
+                case "flex-grow":
                     parsed = float.TryParse(attrValue, out style.FlexGrow);
                     break;
-                case "flex-shrink": //+
+                case "flex-shrink":
                     parsed = float.TryParse(attrValue, out style.FlexShrink);
                     break;
-                case "flex-basis": //+
+                case "flex-basis":
                     parsed = ParseValueFromString(attrValue, out style.FlexBasis);
                     break;
                 case "position":
@@ -727,26 +732,24 @@ namespace Flexbox
                 case "max-height":
                     parsed = ParseValueFromString(attrValue, out style.MaxDimensions[(int)Dimension.Height]);
                     break;
-                case "margin"://                |  1px / 1px 2px 3px 4px / 2px 3px    |
-                case "margin-left"://           |  15px / 30%          |
-                case "margin-right"://          |  15px / 30%          |
-                case "margin-top"://            |  15px / 30%          |
-                case "margin-bottom"://         |  15px / 30%          |
-                case "padding"://               |  1px / 1px 2px 3px 4px / 2px 3px    |
-                case "padding-left"://          |  15px / 30%          |
-                case "padding-right"://         |  15px / 30%          |
-                case "padding-top"://           |  15px / 30%          |
-                case "padding-bottom"://        |  15px / 30%          |
-                case "border-width"://                |  1px / 1px 2px 3px 4px / 2px 3px    |
-                case "border-left"://           |  15px                |
-                case "border-right"://          |  15px                |
-                case "border-top"://            |  15px                |
-                case "border-bottom"://         |  15px                |
-                                     // parse [margin|padding|border]-[Edgexxxx]
-
+                case "margin":
+                case "margin-left":
+                case "margin-right":
+                case "margin-top":
+                case "margin-bottom":
+                case "padding":
+                case "padding-left":
+                case "padding-right":
+                case "padding-top":
+                case "padding-bottom":
+                case "border-width":
+                case "border-left-width":
+                case "border-right-width":
+                case "border-top-width":
+                case "border-bottom-width":
+                    // parse [margin|padding|border]-[Edgexxxx]
                     if (ParseBreakWork(attrKey, out string head, out string tail))
                     {
-                        if (head == "border" && tail == "width") tail = "";
                         if (tail == "")
                         {
                             switch (head)

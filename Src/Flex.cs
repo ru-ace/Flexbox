@@ -78,15 +78,13 @@
 
         public static Node CreateDefaultNode()
         {
-            var node = new Node();
-            return node;
+            return new Node();
         }
 
 
         public static Node CreateDefaultNode(Style style)
         {
-            var node = new Node(style);
-            return node;
+            return new Node(style);
         }
 
         public static Node CreateDefaultNode(Config config)

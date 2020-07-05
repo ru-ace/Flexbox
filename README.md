@@ -6,13 +6,59 @@ Initial code was extracted from [endlesstravel/Rockyfi](https://github.com/endle
 
 Initial code was extracted on May 16, 2019 and represent state of commit [9b9728](https://github.com/endlesstravel/Rockyfi/tree/9b972864658479a2f353c1e0043a926698061298)
 
-For examples code please examine [endlesstravel/Rockyfi/README.md](https://github.com/endlesstravel/Rockyfi/blob/9b972864658479a2f353c1e0043a926698061298/README.md#usage)
+## Quick start
+
+```csharp
+var root = Flex.CreateDefaultNode();
+var node1 = Flex.CreateDefaultNode();
+var node2 = Flex.CreateDefaultNode();
+var node3 = Flex.CreateDefaultNode();
+
+root.AddChild(node1);
+root.AddChild(node2);
+root.AddChild(node3);
+
+root.nodeStyle.Apply("flex-direction: row; width: 200px; height: 200px; padding: 5px;");
+node1.nodeStyle.Apply("align-self: flex-start; margin: 5px; height: 50%; flex-grow: 1;");
+node2.nodeStyle.Apply("align-self: center; margin: 5px; height: 50%; flex-grow: 1;");
+node3.nodeStyle.Apply("align-self: flex-end; margin: 5px; height: 50%; flex-grow: 1;");
+
+Flex.CalculateLayout(root, 200f, 200f, Direction.LTR);
+```
+If you render rectangles for each node with (x: node.layout.absoluteLeft, y: node.layout.absoluteTop, w: node.layout.width, w: node.layout.height) you will get this result:  
+<html>
+<head><style> node { display: flex; box-sizing: border-box; border: 1px solid black; }</style></head>
+<body>
+    <node id="root" style="flex-direction: row; width: 200px; height: 200px; padding: 5px;">
+        <node id="node1" style="align-self: flex-start; margin: 5px; height: 50%; flex-grow: 1;"></node>
+        <node id="node2" style="align-self: center; margin: 5px; height: 50%; flex-grow: 1;"></node>
+        <node id="node3" style="align-self: flex-end; margin: 5px; height: 50%; flex-grow: 1;"></node>
+    </node>
+</body>
+</html>
+
+Html version:
+```html
+<html>
+<head><style> node { display: flex; box-sizing: border-box; border: 1px solid black; }</style></head>
+<body>
+    <node id="root" style="flex-direction: row; width: 200px; height: 200px; padding: 5px;">
+        <node id="node1" style="align-self: flex-start; margin: 5px; height: 50%; flex-grow: 1;"></node>
+        <node id="node2" style="align-self: center; margin: 5px; height: 50%; flex-grow: 1;"></node>
+        <node id="node3" style="align-self: flex-end; margin: 5px; height: 50%; flex-grow: 1;"></node>
+    </node>
+</body>
+</html>
+```
 
 ## Changes:
 
-* Default values sets to [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/), instead of [facebook/yoga](https://github.com/facebook/yoga) 
+* Default values sets to [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/), instead of [facebook/yoga](https://github.com/facebook/yoga):
+    * align-content: flex-start
+    * flex-direction: column
 * Some changes in `Flex.Parse.cs`
 * `Node.LayoutGet*()` methods are internal: use Node.layout instead - `Node.Layout` struct (see `Node.Layout.cs`), which contain cached dimensions of layout, includes edges in absolute coordinates.
+* `Style` can parse text in css format. Support change tracking.
 
 ## Supported style attributes
 
@@ -57,17 +103,15 @@ For examples code please examine [endlesstravel/Rockyfi/README.md](https://githu
 | padding-top | 0 | `<length-percentage>` |
 | padding-bottom | 0 | `<length-percentage>` |
 | border-width | 0 | `<length>{1,4}` |
-| border-left | 0 | `<length>` |
-| border-right | 0 | `<length>` |
-| border-top | 0 | `<length>` |
-| border-bottom | 0 | `<length>` |
+| border-left-width | 0 | `<length>` |
+| border-right-width | 0 | `<length>` |
+| border-top-width | 0 | `<length>` |
+| border-bottom-width | 0 | `<length>` |
 
 ## Docs & Playgrounds
 
-* https://www.w3.org/TR/css-flexbox-1/
-
-* https://html5book.ru/css3-flexbox/
-
 * https://yogalayout.com/
+
+* https://www.w3.org/TR/css-flexbox-1/
 
 * https://css-tricks.com/snippets/css/a-guide-to-flexbox/

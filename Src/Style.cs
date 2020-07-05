@@ -1,17 +1,22 @@
-﻿namespace Flexbox
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+namespace Flexbox
 {
     public class Style
     {
+
+
         internal Direction Direction = Direction.Inherit;
         internal FlexDirection FlexDirection = FlexDirection.Row;
         internal Justify JustifyContent = Justify.FlexStart;
         internal Align AlignContent = Align.Stretch;
         internal Align AlignItems = Align.Stretch;
         internal Align AlignSelf = Align.Auto;
-        public PositionType PositionType = PositionType.Relative;
-        public Wrap FlexWrap = Wrap.NoWrap;
-        public Overflow Overflow = Overflow.Visible;
-        public Display Display = Display.Flex;
+        internal PositionType PositionType = PositionType.Relative;
+        internal Wrap FlexWrap = Wrap.NoWrap;
+        internal Overflow Overflow = Overflow.Visible;
+        internal Display Display = Display.Flex;
         internal float FlexGrow = 0f;
         internal float FlexShrink = 1f;
         internal Value FlexBasis = CreateAutoValue();
@@ -25,8 +30,150 @@
         // Yoga specific properties, not compatible with flexbox specification
         internal float AspectRatio = float.NaN;
 
-        public void SetDefault()
+        protected static readonly Dictionary<string, string> layoutAttributeDefault = new Dictionary<string, string>()
         {
+            {"display", "flex"},
+            {"overflow", "visible"},
+            {"position", "relative"},
+            {"align-content", "stretch"},
+            {"align-items", "stretch"},
+            {"align-self", "auto"},
+            {"flex-direction", "row"},
+            {"flex-wrap", "no-wrap"},
+            {"flex-basis", "auto"},
+            {"flex-shrink", "1"},
+            {"flex-grow", "0"},
+            {"justify-content", "flex-start"},
+            {"direction", "inherit"},
+            {"left", "auto"},
+            {"top", "auto"},
+            {"right", "auto"},
+            {"bottom", "auto"},
+            {"width", "auto"},
+            {"height", "auto"},
+            {"min-width", "auto"},
+            {"min-height", "auto"},
+            {"max-width", "auto"},
+            {"max-height", "auto"},
+            {"margin", "0"},
+            {"margin-left", "0"},
+            {"margin-right", "0"},
+            {"margin-top", "0"},
+            {"margin-bottom", "0"},
+            {"padding", "0"},
+            {"padding-left", "0"},
+            {"padding-right", "0"},
+            {"padding-top", "0"},
+            {"padding-bottom", "0"},
+            {"border-width", "0"},
+            {"border-left-width", "0"},
+            {"border-right-width", "0"},
+            {"border-top-width", "0"},
+            {"border-bottom-width", "0"},
+        };
+        protected static readonly Dictionary<string, string> layoutAttributeInherit = new Dictionary<string, string>()
+        {
+            {"direction", "ltr"}
+        };
+
+        protected bool setDiffMode = false;
+
+        public bool layoutDirty
+        {
+            get { return layoutAttributeChanged.Count > 0; }
+            set { if (!value) layoutAttributeChanged.Clear(); else throw new Exception("Flexbox.Style.layoutDirty cannot be set to true"); }
+        }
+
+        protected readonly Dictionary<string, string> layoutAttribute = new Dictionary<string, string>();
+        protected readonly Dictionary<string, string> layoutAttributeChanged = new Dictionary<string, string>();
+        protected readonly Dictionary<string, string> layoutAttributeWas = new Dictionary<string, string>();
+
+        public virtual string this[string attr]
+        {
+            get
+            {
+                if (!layoutAttributeDefault.ContainsKey(attr)) throw new Exception("Try to get unknown layout style attribute [" + attr + "]");
+                string value = layoutAttribute.ContainsKey(attr) ? layoutAttribute[attr] : layoutAttributeDefault[attr];
+                if (layoutAttributeInherit.ContainsKey(attr) && value == "inherit")
+                {
+                    //! Dirty-dirty hack (for good solution need to knew style of parent node, placed in TODO)
+                    value = layoutAttributeInherit[attr];
+                }
+                return value;
+            }
+            set
+            {
+                if (!layoutAttributeDefault.ContainsKey(attr)) throw new Exception("Try to set unknown layout style attribute [" + attr + "]");
+                value = value.Trim();
+                // TODO: if attr is margin, padding, border - ignore it in change tracking and expands it to edges(top, left, bottom, right)
+
+                if (setDiffMode)
+                {
+                    var old_value = layoutAttributeWas.ContainsKey(attr) ? layoutAttributeWas[attr] : layoutAttributeDefault[attr];
+                    if (value != old_value)
+                        layoutAttributeChanged[attr] = old_value;
+                    else if (layoutAttributeChanged.ContainsKey(attr))
+                        layoutAttributeChanged.Remove(attr);
+                }
+                else
+                {
+                    if (this[attr] == value) return;
+                    layoutAttributeChanged[attr] = this[attr];
+                }
+                layoutAttribute[attr] = value;
+                if (!Flex.ParseStyleAttr(this, attr, value))
+                    throw new Exception("Failed to parse attribute [" + attr + ":" + value + "]");
+
+            }
+        }
+
+        public virtual string[] GetChangedLayoutAttributeNames()
+        {
+            return layoutAttributeChanged.Keys.ToArray();
+        }
+        public virtual string GetChangedLayoutAttributePreviousValue(string attr)
+        {
+            return layoutAttributeChanged[attr];
+        }
+
+        public virtual void Set(string style)
+        {
+            layoutAttributeWas.Clear();
+            if (layoutAttribute.Count > 0)
+            {
+                foreach (var kv in layoutAttribute)
+                    layoutAttributeWas.Add(kv.Key, kv.Value);
+                setDiffMode = true;
+            }
+            SetDefault();
+            Apply(style);
+            setDiffMode = false;
+        }
+
+        public virtual void Apply(string style)
+        {
+            if (style.Trim() != "") Parse(style);
+        }
+
+        public virtual void Parse(string style)
+        {
+            var items = style.Split(';');
+            foreach (var item in items)
+            {
+                if (item.Trim() == "") continue;
+                var part = item.Trim().Split(':');
+                if (part.Length == 2)
+                    this[part[0].Trim()] = part[1].Trim();
+                else
+                    throw new System.Exception("Failed to parse style [" + item + "] in  [" + style + "]");
+            }
+        }
+
+        public virtual void SetDefault()
+        {
+
+            layoutAttributeChanged.Clear();
+            layoutAttribute.Clear();
             Direction = Direction.Inherit;
             FlexDirection = FlexDirection.Row;
             JustifyContent = Justify.FlexStart;

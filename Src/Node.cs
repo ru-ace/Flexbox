@@ -3,7 +3,7 @@ namespace Flexbox
 {
     public partial class Node
     {
-        internal Style nodeStyle = new Style();
+        public Style nodeStyle = new Style();
         readonly internal Flex.Layout nodeLayout = new Flex.Layout();
         internal int lineIndex;
 

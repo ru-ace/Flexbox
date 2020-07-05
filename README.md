@@ -1,6 +1,6 @@
 # Flexbox
 
-C# implementation of [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/) layout algorithm. 
+Pure C# port of [FaceBook.Yoga](https://github.com/facebook/yoga) - implementation of [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/) layout algorithm. 
 
 Initial code was extracted from [endlesstravel/Rockyfi](https://github.com/endlesstravel/Rockyfi), which containts pure c#-port of [kjk/flex](https://github.com/kjk/flex), which are pure go-port of [facebook/yoga](https://github.com/facebook/yoga) 
 
@@ -25,7 +25,7 @@ node3.nodeStyle.Apply("align-self: flex-end; margin: 5px; height: 50%; flex-grow
 
 Flex.CalculateLayout(root, 200f, 200f, Direction.LTR);
 ```
-If you render rectangles for each node with (x: node.layout.absoluteLeft, y: node.layout.absoluteTop, w: node.layout.width, w: node.layout.height) you will get same result as this html:  
+If you render rectangles for each node with (x: node.layout.absoluteLeft, y: node.layout.absoluteTop, w: node.layout.width, h: node.layout.height) you will get same result as this html:  
 ```html
 <html>
 <head><style> node { display: flex; box-sizing: border-box; border: 1px solid black; }</style></head>
@@ -41,12 +41,12 @@ If you render rectangles for each node with (x: node.layout.absoluteLeft, y: nod
 
 ## Changes:
 
-* Default values sets to [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/), instead of [facebook/yoga](https://github.com/facebook/yoga):
-    * align-content: flex-start
-    * flex-direction: column
+* Default values sets to [flexbox CSS](https://www.w3.org/TR/css-flexbox-1/), instead of [facebook/yoga](https://github.com/facebook/yoga) values:
+    * align-content: flex-start;
+    * flex-direction: column;
 * Some changes in `Flex.Parse.cs`
-* `Node.LayoutGet*()` methods are internal: use Node.layout instead - `Node.Layout` struct (see `Node.Layout.cs`), which contain cached dimensions of layout, includes edges in absolute coordinates.
-* `Style` can parse text in css format. Support change tracking.
+* `Node.LayoutGet*()` methods are internal: use Node.layout instead -`Node.Layout` struct (see `Node.Layout.cs`), which contain cached layout dimensions, including rectangles in absolute coordinates.
+* `Style` can parse text in css format. Change tracking support.
 
 ## Supported style attributes
 

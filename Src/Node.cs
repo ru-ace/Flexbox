@@ -70,19 +70,19 @@ namespace Flexbox
 
         #region Layout
 
-        internal float LayoutGetAbsoluteLeft()
+        internal float LayoutGetX()
         {
             var x = this.nodeLayout.Position[(int)Edge.Left];
-            if (this.nodeStyle.PositionType == PositionType.Relative && this.Parent != null)
-                x += this.Parent.LayoutGetAbsoluteLeft();
+            if (this.Parent != null)
+                x += this.Parent.LayoutGetX();
             return x;
         }
 
-        internal float LayoutGetAbsoluteTop()
+        internal float LayoutGetY()
         {
             var y = this.nodeLayout.Position[(int)Edge.Top];
-            if (this.nodeStyle.PositionType == PositionType.Relative && this.Parent != null)
-                y += this.Parent.LayoutGetAbsoluteTop();
+            if (this.Parent != null)
+                y += this.Parent.LayoutGetY();
             return y;
         }
         // LayoutGetLeft gets left

@@ -117,7 +117,7 @@ namespace Flexbox
                 }
                 else
                 {
-                    if (this[attr] == value) return;
+                    //if (this[attr] == value) return;
                     layoutAttributeChanged[attr] = this[attr];
                 }
                 layoutAttribute[attr] = value;

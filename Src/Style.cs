@@ -30,6 +30,8 @@ namespace Flexbox
         // Yoga specific properties, not compatible with flexbox specification
         internal float AspectRatio = float.NaN;
 
+
+        // default values of supported attrs
         protected static readonly Dictionary<string, string> layoutAttributeDefault = new Dictionary<string, string>()
         {
             {"display", "flex"},
@@ -71,6 +73,8 @@ namespace Flexbox
             {"border-top-width", "0"},
             {"border-bottom-width", "0"},
         };
+
+        // default values for inherit attrs
         protected static readonly Dictionary<string, string> layoutAttributeInherit = new Dictionary<string, string>()
         {
             {"direction", "ltr"}
@@ -84,14 +88,20 @@ namespace Flexbox
             set { if (!value) layoutAttributeChanged.Clear(); else throw new Exception("Flexbox.Style.layoutDirty cannot be set to true"); }
         }
 
+        // use to store affected attrs
         protected readonly Dictionary<string, string> layoutAttribute = new Dictionary<string, string>();
+        // use to store previous values for changed attributes (relative Apply() and this[])
         protected readonly Dictionary<string, string> layoutAttributeChanged = new Dictionary<string, string>();
+        // use to store attrs values before Set() was called. Thus attributeChanged represents changed values relative values before Set() was called.
         protected readonly Dictionary<string, string> layoutAttributeWas = new Dictionary<string, string>();
+        // use to store attrs values which changed by animation(see ApplyAnimation())
+        protected readonly Dictionary<string, string> layoutAttributeAnimated = new Dictionary<string, string>();
 
         public virtual string this[string attr]
         {
             get
             {
+                if (layoutAttributeAnimated.ContainsKey(attr)) return layoutAttributeAnimated[attr];
                 if (!layoutAttributeDefault.ContainsKey(attr)) throw new Exception("Try to get unknown layout style attribute [" + attr + "]");
                 string value = layoutAttribute.ContainsKey(attr) ? layoutAttribute[attr] : layoutAttributeDefault[attr];
                 if (layoutAttributeInherit.ContainsKey(attr) && value == "inherit")
@@ -125,6 +135,33 @@ namespace Flexbox
                     throw new Exception("Failed to parse attribute [" + attr + ":" + value + "]");
 
             }
+        }
+        public virtual void ApplyAnimation(Dictionary<string, string> animated_attrs = null)
+        {
+            layoutAttributeAnimated.Clear();
+            if (animated_attrs != null)
+            {
+                foreach (var kv in animated_attrs)
+                {
+                    var attr = kv.Key;
+                    if (this[attr] != kv.Value)
+                        layoutAttributeChanged[attr] = this[attr];
+                    layoutAttributeAnimated[attr] = kv.Value;
+                }
+            }
+            Sync();
+        }
+
+        protected virtual void Sync()
+        {
+            SetDefault(false);
+            foreach (var kv in layoutAttribute)
+                if (!Flex.ParseStyleAttr(this, kv.Key, kv.Value))
+                    throw new Exception("Failed to parse attribute [" + kv.Key + ":" + kv.Value + "]");
+
+            foreach (var kv in layoutAttributeAnimated)
+                if (!Flex.ParseStyleAttr(this, kv.Key, kv.Value))
+                    throw new Exception("Failed to parse attribute [" + kv.Key + ":" + kv.Value + "]");
         }
 
         public virtual string[] GetChangedLayoutAttributeNames()
@@ -173,11 +210,13 @@ namespace Flexbox
             }
         }
 
-        public virtual void SetDefault()
+        public virtual void SetDefault(bool clear_text_values = true)
         {
-
-            layoutAttributeChanged.Clear();
-            layoutAttribute.Clear();
+            if (clear_text_values)
+            {
+                layoutAttributeChanged.Clear();
+                layoutAttribute.Clear();
+            }
             Direction = Direction.Inherit;
             FlexDirection = FlexDirection.Row;
             JustifyContent = Justify.FlexStart;
@@ -234,6 +273,7 @@ namespace Flexbox
         {
             return new Value(float.NaN, Unit.Auto);
         }
+
         internal static Value[] CreateDefaultEdgeValuesUnit()
         {
             return new Value[Constant.EdgeCount]{

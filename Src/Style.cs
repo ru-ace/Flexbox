@@ -82,10 +82,24 @@ namespace Flexbox
 
         protected bool setMode = false;
 
+        protected bool forceLayoutDirty = false;
+
         public bool layoutDirty
         {
-            get { return layoutAttributeChanged.Count > 0; }
-            set { if (!value) layoutAttributeChanged.Clear(); else throw new Exception("Flexbox.Style.layoutDirty cannot be set to true"); }
+            get
+            {
+                return forceLayoutDirty || layoutAttributeChanged.Count > 0;
+            }
+            set
+            {
+                if (!value)
+                {
+                    layoutAttributeChanged.Clear();
+                    forceLayoutDirty = false;
+                }
+                else
+                    throw new Exception("Flexbox.Style.layoutDirty cannot be set to true");
+            }
         }
 
         // use to store affected attrs

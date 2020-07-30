@@ -524,7 +524,7 @@ namespace Flexbox
                 uu = Unit.Point;
             }
 
-            if (float.TryParse(dig, out res.value))
+            if (float.TryParse(dig, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out res.value))
             {
                 res.unit = uu;
             }
@@ -691,10 +691,10 @@ namespace Flexbox
                     parsed = Flex.StringToDisplay(attrValue, out style.Display);
                     break;
                 case "flex-grow":
-                    parsed = float.TryParse(attrValue, out style.FlexGrow);
+                    parsed = float.TryParse(attrValue, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out style.FlexGrow);
                     break;
                 case "flex-shrink":
-                    parsed = float.TryParse(attrValue, out style.FlexShrink);
+                    parsed = float.TryParse(attrValue, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out style.FlexShrink);
                     break;
                 case "flex-basis":
                     parsed = ParseValueFromString(attrValue, out style.FlexBasis);

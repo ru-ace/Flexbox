@@ -80,10 +80,10 @@ namespace Flexbox
             {"direction", "ltr"}
         };
 
-        protected bool setMode = false;
 
-        protected bool forceLayoutDirty = false;
 
+        // Reports that styles have changed values that affect to layout    
+        private bool forceLayoutDirty = false;
         public bool layoutDirty
         {
             get
@@ -92,25 +92,26 @@ namespace Flexbox
             }
             set
             {
+                forceLayoutDirty = value;
                 if (!value)
-                {
                     layoutAttributeChanged.Clear();
-                    forceLayoutDirty = false;
-                }
-                else
-                    throw new Exception("Flexbox.Style.layoutDirty cannot be set to true");
+
             }
         }
 
+        // change logic for track changes when calls Set() 
+        protected bool setMode = false;
+
         // use to store affected attrs
         protected readonly Dictionary<string, string> layoutAttribute = new Dictionary<string, string>();
-        // use to store previous values for changed attributes (relative Apply() and this[])
+        // use to store previous values for changed attributes (relative Apply(), Set() and this[] )
         protected readonly Dictionary<string, string> layoutAttributeChanged = new Dictionary<string, string>();
         // use to store attrs values before Set() was called. Thus attributeChanged represents changed values relative values before Set() was called.
         protected readonly Dictionary<string, string> layoutAttributeWas = new Dictionary<string, string>();
         // use to store attrs values which changed by animation(see ApplyAnimation())
         protected readonly Dictionary<string, string> layoutAttributeAnimated = new Dictionary<string, string>();
 
+        // get/set attribute by text name used string value
         public virtual string this[string attr]
         {
             get
@@ -150,6 +151,8 @@ namespace Flexbox
 
             }
         }
+
+        // set new values for animated attributes 
         public virtual void ApplyAnimation(Dictionary<string, string> animated_attrs = null)
         {
             layoutAttributeAnimated.Clear();
@@ -166,6 +169,7 @@ namespace Flexbox
             Sync();
         }
 
+        // Sync text values to class properties. Used for animation.
         protected virtual void Sync()
         {
             SetDefault(false);
@@ -178,15 +182,19 @@ namespace Flexbox
                     throw new Exception("Failed to parse attribute [" + kv.Key + ":" + kv.Value + "]");
         }
 
+        // returns array of names changed attributes after call Set() or Apply() - used for transition animation
         public virtual string[] GetChangedLayoutAttributeNames()
         {
             return layoutAttributeChanged.Keys.ToArray();
         }
+
+        // returns previous value of changed attribute - used for transition animation
         public virtual string GetChangedLayoutAttributePreviousValue(string attr)
         {
             return layoutAttributeChanged[attr];
         }
 
+        // Reset to default state and apply styles
         public virtual void Set(string style)
         {
             layoutAttributeWas.Clear();
@@ -205,11 +213,13 @@ namespace Flexbox
             setMode = false;
         }
 
+        // Apply styles to current state
         public virtual void Apply(string style)
         {
             if (style.Trim() != "") Parse(style);
         }
 
+        // simple parser for css style text. comments must be removed. 
         public virtual void Parse(string style)
         {
             var items = style.Split(';');
@@ -224,6 +234,8 @@ namespace Flexbox
             }
         }
 
+        // Set defaults values for attributes
+        // clear_text_values = false used for animation(see Sync())
         public virtual void SetDefault(bool clear_text_values = true)
         {
             if (clear_text_values)

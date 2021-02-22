@@ -181,16 +181,11 @@ namespace Flexbox
                     throw new Exception("Failed to parse attribute [" + kv.Key + ":" + kv.Value + "]");
         }
 
-        // returns array of names changed attributes after call Set() or Apply() - used for transition animation
-        public virtual string[] GetChangedLayoutAttributeNames()
+        //returns dictionatry of changed attributes with previous value after Set() or Apply() was called
+        //used for transition animation
+        public virtual Dictionary<string, string> GetChangedAttributes()
         {
-            return layoutAttributeChanged.Keys.ToArray();
-        }
-
-        // returns previous value of changed attribute - used for transition animation
-        public virtual string GetChangedLayoutAttributePreviousValue(string attr)
-        {
-            return layoutAttributeChanged[attr];
+            return new Dictionary<string, string>(layoutAttributeChanged);
         }
 
         // Reset to default state and apply styles

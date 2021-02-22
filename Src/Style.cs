@@ -95,7 +95,6 @@ namespace Flexbox
                 forceLayoutDirty = value;
                 if (!value)
                     layoutAttributeChanged.Clear();
-
             }
         }
 
@@ -198,12 +197,13 @@ namespace Flexbox
         public virtual void Set(string style)
         {
             layoutAttributeWas.Clear();
-            if (layoutAttribute.Count > 0)
-            {
-                foreach (var kv in layoutAttribute)
-                    layoutAttributeWas.Add(kv.Key, kv.Value);
-                setMode = true;
-            }
+
+            foreach (var kv in layoutAttribute)
+                layoutAttributeWas.Add(kv.Key, kv.Value);
+            foreach (var kv in layoutAttributeChanged)
+                layoutAttributeWas[kv.Key] = kv.Value;
+
+            setMode = true;
             SetDefault();
             Apply(style);
             foreach (var kv in layoutAttributeWas)

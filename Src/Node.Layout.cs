@@ -1,8 +1,9 @@
+using System;
 namespace Flexbox
 {
     public partial class Node
     {
-        public struct Layout8D
+        public struct Layout8D : IEquatable<Layout8D>
         {
             public int left, right, top, bottom;
 
@@ -55,9 +56,28 @@ namespace Flexbox
             {
                 return string.Format("(x:{0} y:{1} w:{2} h:{3}) (l:{4} t:{5} r:{6} b:{7}))", x, y, width, height, left, top, right, bottom);
             }
+
+            public bool Equals(Layout8D l)
+            {
+                return x == l.x
+                    && y == l.y
+                    && width == l.width
+                    && height == l.height
+                    && left == l.left
+                    && right == l.right
+                    && top == l.top
+                    && bottom == l.bottom;
+            }
+            public static bool operator ==(Layout8D a, Layout8D b) => a.Equals(b);
+            public static bool operator !=(Layout8D a, Layout8D b) => !a.Equals(b);
+            public override bool Equals(object l) { return base.Equals(l); }
+            public override int GetHashCode() { return base.GetHashCode(); }
         }
-        public struct Layout
+        public struct Layout : IEquatable<Layout>
         {
+            //! remake
+            public bool setted;
+
             public int left, right, top, bottom;
             //Content Edge
             public int x, y, width, height;
@@ -70,9 +90,11 @@ namespace Flexbox
             public bool hadOverflow;
             public Direction direction;
 
+
+
             internal Layout(Node node)
             {
-
+                setted = true;
                 x = (int)node.LayoutGetX();
                 y = (int)node.LayoutGetY();
                 left = (int)node.LayoutGetLeft();
@@ -115,7 +137,28 @@ namespace Flexbox
                 line += new System.String(' ', indent * 2) + "}";
                 return line;
             }
+            public static bool operator ==(Layout a, Layout b) => a.Equals(b);
+            public static bool operator !=(Layout a, Layout b) => !a.Equals(b);
+            public bool Equals(Layout l)
+            {
+                return x == l.x
+                     && y == l.y
+                     && width == l.width
+                     && height == l.height
+                     && left == l.left
+                     && right == l.right
+                     && top == l.top
+                     && bottom == l.bottom
+                     && margin == l.margin
+                     && border == l.border
+                     && padding == l.padding
+                     && content == l.content
+                     && hadOverflow == l.hadOverflow
+                     && direction == l.direction;
 
+            }
+            public override bool Equals(object l) { return base.Equals(l); }
+            public override int GetHashCode() { return base.GetHashCode(); }
         }
     }
 }

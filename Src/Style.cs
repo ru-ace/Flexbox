@@ -154,14 +154,16 @@ namespace Flexbox
         // set new values for animated attributes 
         public virtual void ApplyAnimation(Dictionary<string, string> animated_attrs = null)
         {
+            var prev_animation = new Dictionary<string, string>(layoutAttributeAnimated);
             layoutAttributeAnimated.Clear();
             if (animated_attrs != null)
             {
                 foreach (var kv in animated_attrs)
                 {
                     var attr = kv.Key;
-                    if (this[attr] != kv.Value)
-                        layoutAttributeChanged[attr] = this[attr];
+                    var prev_value = prev_animation.ContainsKey(attr) ? prev_animation[attr] : this[attr];
+                    if (prev_value != kv.Value)
+                        layoutAttributeChanged[attr] = prev_value;
                     layoutAttributeAnimated[attr] = kv.Value;
                 }
             }

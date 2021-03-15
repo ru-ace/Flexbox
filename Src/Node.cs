@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 namespace Flexbox
 {
     public partial class Node
@@ -21,13 +22,11 @@ namespace Flexbox
         internal Node Parent = null;
         internal readonly List<Node> Children = new List<Node>();
 
-        public int ChildrenCount
-        {
-            get
-            {
-                return Children.Count;
-            }
-        }
+        public int ChildrenCount { get { return Children.Count; } }
+
+        public Node firstChild { get { return Children.Count > 0 ? Children.First() : null; } }
+        public Node lastChild { get { return Children.Count > 0 ? Children.Last() : null; } }
+
         internal Node NextChild;
 
         internal MeasureFunc measureFunc;

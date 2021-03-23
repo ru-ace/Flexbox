@@ -141,7 +141,6 @@ namespace Flexbox
                 }
                 else
                 {
-                    //if (this[attr] == value) return;
                     layoutAttributeChanged[attr] = this[attr];
                 }
                 layoutAttribute[attr] = value;
@@ -183,6 +182,18 @@ namespace Flexbox
                     throw new Exception("Failed to parse attribute [" + kv.Key + ":" + kv.Value + "]");
         }
 
+        //fix problem like : changes (v0 -> v1 -> v0)
+        protected virtual void CleanupLayoutAttributeChanged()
+        {
+            var lac = new Dictionary<string, string>(layoutAttributeChanged);
+            foreach (var kv in lac)
+            {
+                var new_val = (layoutAttribute.ContainsKey(kv.Key) ? layoutAttribute[kv.Key] : layoutAttributeDefault[kv.Key]);
+                if (kv.Value == new_val)
+                    layoutAttributeChanged.Remove(kv.Key);
+            }
+        }
+
         //returns dictionatry of changed attributes with previous value after Set() or Apply() was called
         //used for transition animation
         public virtual Dictionary<string, string> GetChangedAttributes()
@@ -208,12 +219,14 @@ namespace Flexbox
                     layoutAttributeChanged[kv.Key] = layoutAttributeDefault[kv.Key];
 
             setMode = false;
+            CleanupLayoutAttributeChanged();
         }
 
         // Apply styles to current state
         public virtual void Apply(string style)
         {
             if (style.Trim() != "") Parse(style);
+            CleanupLayoutAttributeChanged();
         }
 
         // simple parser for css style text. comments must be removed. 

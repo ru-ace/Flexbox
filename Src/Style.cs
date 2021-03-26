@@ -57,17 +57,17 @@ namespace Flexbox
             {"min-height", "auto"},
             {"max-width", "auto"},
             {"max-height", "auto"},
-            {"margin", "0"},
+            {"margin", "skip"},
             {"margin-left", "0"},
             {"margin-right", "0"},
             {"margin-top", "0"},
             {"margin-bottom", "0"},
-            {"padding", "0"},
+            {"padding", "skip"},
             {"padding-left", "0"},
             {"padding-right", "0"},
             {"padding-top", "0"},
             {"padding-bottom", "0"},
-            {"border-width", "0"},
+            {"border-width", "skip"},
             {"border-left-width", "0"},
             {"border-right-width", "0"},
             {"border-top-width", "0"},
@@ -110,6 +110,14 @@ namespace Flexbox
         // use to store attrs values which changed by animation(see ApplyAnimation())
         protected readonly Dictionary<string, string> layoutAttributeAnimated = new Dictionary<string, string>();
 
+        private static Dictionary<string, int> edgeNameToId = new Dictionary<string, int>()
+            {
+                {"left", (int) Edge.Left},
+                {"top", (int) Edge.Top},
+                {"right", (int) Edge.Right},
+                {"bottom", (int) Edge.Bottom}
+            };
+
         // get/set attribute by text name used string value
         public virtual string this[string attr]
         {
@@ -127,10 +135,24 @@ namespace Flexbox
             }
             set
             {
-                if (!layoutAttributeDefault.ContainsKey(attr)) throw new Exception("Try to set unknown layout style attribute [" + attr + "]");
-                value = value.Trim();
-                // TODO: if attr is margin, padding, border - ignore it in change tracking and expands it to edges(top, left, bottom, right)
 
+                value = value.Trim();
+
+                // if attr is margin, padding, border-width - ignore it in change tracking and expands it to edges(top, right, bottom, and left)
+                if (attr == "margin" || attr == "padding" || attr == "border-width")
+                {
+                    var tail = attr == "border-width" ? "-width" : "";
+                    var name = attr == "border-width" ? "border" : attr;
+                    if (Flex.ParseFourValueFromString(value, out var vals))
+                        foreach (var kv in edgeNameToId)
+                            this[name + "-" + kv.Key + tail] = vals[kv.Value].value.ToString("F7", System.Globalization.CultureInfo.InvariantCulture);
+                    else
+                        throw new Exception("Failed to parse attribute [" + attr + ":" + value + "]");
+
+                    return;
+                }
+
+                if (!layoutAttributeDefault.ContainsKey(attr)) throw new Exception("Try to set unknown layout style attribute [" + attr + "]");
                 if (setMode)
                 {
                     var old_value = layoutAttributeWas.ContainsKey(attr) ? layoutAttributeWas[attr] : layoutAttributeDefault[attr];

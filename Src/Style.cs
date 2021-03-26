@@ -145,7 +145,7 @@ namespace Flexbox
                     var name = attr == "border-width" ? "border" : attr;
                     if (Flex.ParseFourValueFromString(value, out var vals))
                         foreach (var kv in edgeNameToId)
-                            this[name + "-" + kv.Key + tail] = vals[kv.Value].value.ToString("F7", System.Globalization.CultureInfo.InvariantCulture);
+                            this[name + "-" + kv.Key + tail] = vals[kv.Value].value.ToString("F", System.Globalization.CultureInfo.InvariantCulture);
                     else
                         throw new Exception("Failed to parse attribute [" + attr + ":" + value + "]");
 

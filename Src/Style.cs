@@ -228,18 +228,18 @@ namespace Flexbox
         public virtual void Set(string style)
         {
             layoutAttributeWas.Clear();
-
-            foreach (var kv in layoutAttribute)
-                layoutAttributeWas.Add(kv.Key, kv.Value);
             foreach (var kv in layoutAttributeChanged)
                 layoutAttributeWas[kv.Key] = kv.Value;
+            foreach (var kv in layoutAttribute)
+                layoutAttributeWas[kv.Key] = kv.Value;
+
 
             setMode = true;
             SetDefault();
             Apply(style);
             foreach (var kv in layoutAttributeWas)
                 if (!layoutAttribute.ContainsKey(kv.Key))
-                    layoutAttributeChanged[kv.Key] = layoutAttributeDefault[kv.Key];
+                    layoutAttributeChanged[kv.Key] = layoutAttributeWas.ContainsKey(kv.Key) ? layoutAttributeWas[kv.Key] : layoutAttributeDefault[kv.Key];
 
             setMode = false;
             CleanupLayoutAttributeChanged();
